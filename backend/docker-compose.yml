@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  auth_service:
+    build: ./auth_service
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://user:password@db/auth_db
+
+  task_service:
+    build: ./task_service
+    ports:
+      - "8002:8002"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://user:password@db/task_db
+
+  user_service:
+    build: ./user_service
+    ports:
+      - "8003:8003"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://user:password@db/user_db
+
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
