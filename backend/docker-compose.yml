@@ -42,3 +42,12 @@ services:
 volumes:
   postgres_data:
 
+    frontend:
+    build: ../frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - auth_service
+      - task_service
+      - user_service
+
