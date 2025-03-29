@@ -1,0 +1,22 @@
+
+version: "3.8"
+services:
+  db:
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # Production password from environment
+
+  backend:
+    deploy:
+      resources:
+        limits:
+          cpu: "1"
+          memory: 1GiB
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/todo
+
+  frontend:
+    deploy:
+      resources:
+        limits:
+          cpu: "0.5"
+          memory: 512MiB
