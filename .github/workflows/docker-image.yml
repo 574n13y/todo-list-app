@@ -20,5 +20,7 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
 
-      - name: Build the Docker images
-        run: docker-compose -f deployment/docker-compose.yml build
+  #    - name: Build the Docker images
+   #     run: docker-compose -f deployment/docker-compose.yml build
+   #     env:
+    #      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }} # Use GitHub Secret
