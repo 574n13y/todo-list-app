@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: YOUR_BACKEND_IMAGE # Replace with your backend image
+          ports:
+            - containerPort: 8000
+            - containerPort: 8001
+          env:
+            - name: DATABASE_URL
+              value: postgresql://postgres:$(DB_PASSWORD)@db-service:5432/todo
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: password
+            - name: SECRET_KEY
+              value: "secret" #Ideally retrieve from a secret.
+          readinessProbe: #Health checks
+            httpGet:
+              path: / # or a health check endpoint
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: / # or a health check endpoint
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+    - protocol: TCP
+      port: 8001
+      targetPort: 8001
