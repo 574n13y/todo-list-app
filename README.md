@@ -52,7 +52,7 @@ A microservices-based To-Do List application built with FastAPI, PostgreSQL, and
   |PUT	  | /tasks/{id}	| Update task |
   |DELETE | /tasks/{id}	| Delete task |
 
-# 8. Commit and Push
+## Commit and Push
 
 git add .
 git commit -m "Initial commit: Microservices To-Do List App"
