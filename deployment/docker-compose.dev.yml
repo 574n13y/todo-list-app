@@ -1,0 +1,21 @@
+
+version: "3.8"
+services:
+  db:
+    environment:
+      POSTGRES_PASSWORD: "password" # Development password
+
+  backend:
+    volumes:
+      - ../backend:/app # Mount code for hot reloading
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/todo #dev password
+    ports:
+      - "8000:8000" #expose ports for dev
+      - "8001:8000"
+  frontend:
+    volumes:
+      - ../frontend/src:/app/src
+      - ../frontend/public:/app/public
+    ports:
+      - "3000:3000"
